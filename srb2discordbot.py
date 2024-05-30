@@ -115,6 +115,7 @@ if os.path.isfile("srb2discordbot/data/cpcfg.sdb") == False:
 #inputs
 inp_token = None
 inp_channelpost = None
+inp_roleping = None
 inp_channelstatus = None
 inp_channellog = None
 inp_botprex = None
@@ -155,7 +156,7 @@ def json_config():
     if not inp_roleping:
         inp_roleping = input("Role ID that you want to ping when server starts (optional): ")
         if inp_roleping == "":
-            inp_roleping = "0"
+            inp_roleping = "\"None\""
     inp_roleping = "\n\"role_id\": \""+inp_roleping+"\","
 
     if not inp_channelstatus:
@@ -168,7 +169,7 @@ def json_config():
     if not inp_channellog:
         inp_channellog = input("Log channel ID (optional): ")
         if inp_channellog == "":
-            inp_channellog = "0"
+            inp_channellog = "\"None\""
     inp_channellog = (reg_id.sub('', inp_channellog))
     inp_channellog = "\n\"log_id\": "+inp_channellog+","
 
@@ -760,7 +761,7 @@ def getsrbstats():
         #Open statistics of SRB2 Server
         srbstats = open('luafiles/client/DiscordBot/Stats.txt', 'r')
         #Get server name
-        reg = re.compile("[^a-zA-Z0-9 !@#$%^&*()-_=+{}[]|/\?<>.,`~]")
+        reg = re.compile("[^a-zA-Z0-9 !@#$%^&*()-_=+{}[]|?<>.,`~]")
         servername = srbstats.readline()
         servername = (reg.sub('', servername))
         #Get level name and map number
@@ -889,7 +890,7 @@ class MyClient(discord.Client):
 
         global startup_message
         startup_message = "✅ `Server has started!`"
-        if inp_roleping != "none":
+        if inp_roleping != "None":
             startup_message = f"✅ <@&{inp_roleping}> `Server has started!`"
 
         #Print bot name to console on successful connection
@@ -912,7 +913,7 @@ class MyClient(discord.Client):
         
         #Get bot name and avatar for embed
         botname = self.user
-        botavatar = self.user.avatar_url
+        botavatar = self.user.display_avatar
         twoxsdavoid = 2
 
 
@@ -1234,7 +1235,7 @@ class MyClient(discord.Client):
                             file_embed.close()
                             if msgstats != None:
                                 await msgstats.delete()
-                            msgstats = await statchannel.send(embed=embedstats)
+                            #msgstats = await statchannel.send(embed=embedstats)
                             file_embed = open("srb2discordbot/data/stats.sdb", "w")
                             file_embed.write(str(msgstats.id))
                             file_embed.close()
@@ -1249,7 +1250,7 @@ class MyClient(discord.Client):
                             
                         #if embed was removed from text file
                         except discord.errors.NotFound:
-                            msgstats = await statchannel.send(embed=embedstats)
+                            #msgstats = await statchannel.send(embed=embedstats)
                             file_embed = open("srb2discordbot/data/stats.sdb", "w")
                             file_embed.write(str(msgstats.id))
                             file_embed.close()
@@ -1275,7 +1276,7 @@ class MyClient(discord.Client):
                         except discord.errors.NotFound:
                             if config["debug"] == True:
                                 print(Style.BRIGHT + "[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + 'Warning:' + Style.RESET_ALL + ' message was deleted, creating a new message...')
-                            msgstats = await statchannel.send(embed=embedstats)
+                            #msgstats = await statchannel.send(embed=embedstats)
                             file_embed = open("srb2discordbot/data/stats.sdb", "w")
                             file_embed.write(str(msgstats.id))
                             file_embed.close()
