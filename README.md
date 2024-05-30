@@ -1,7 +1,7 @@
 # SRB2DiscordBot
-<span style="font-size: 18px">Have a chat with SRB2 players on Discord!</span></b><br>
-<span style="font-size: 15px">If you use .exe file, you don't need python and modules for bot, but if you want use .py file you need download python 3+ and modules.</span><br>
-<span style="font-size: 18px">The script does not work on Linux, also not tested for SRB2Kart!</span></b><br>
+<span style="font-size: 18px">Have a chat with SRB2 players on Discord!</span></b><br><br>
+<span style="font-size: 15px">This is based off of Sirexer's SRB2 Discord Bot. You will need Python 3+ and the required modules for the bot.</span><br><br>
+<span style="font-size: 18px">The script does not work on Linux. This is also not tested for SRB2Kart.</span></b><br><br>
 <b><span style="font-size: 15px">Python modules:</span></b><br>
 <ul>
 <li data-xf-list-type="ul">Discord 1.7.3;</li>
@@ -14,7 +14,7 @@
 </ul><br>
 <span style="font-size: 15px"><b>What the bot is able to do:</span></b><br>
 <ul>
-<li data-xf-list-type="ul">translate the chat from the game in the discord and let communicate outside the game;</li>
+<li data-xf-list-type="ul">Relay chat from the game into a Discord channel, and let Discord users communicate back in that channel;</li>
 <li data-xf-list-type="ul">Run the server with parameters, the parameters are specified in the .cfg file;</li>
 <li data-xf-list-type="ul">Restart the server with a fatal error or at closing the server;</li>
 <li data-xf-list-type="ul">Display server statistics (map, image (url), map number, number of emeralds, number of players, map time, server time, list of players and their statistics).</li>
