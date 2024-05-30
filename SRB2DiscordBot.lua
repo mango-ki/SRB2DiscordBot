@@ -197,7 +197,8 @@ COM_AddCommand("discord_message", function(player, ...)
 	if player != server then return end
 	if not ... then return end
 	for _,i in ipairs({...}) do
-		chatprint("\x89".."[Discord]".."\x80"..i, true)
+		--chatprint("\x89".."[Discord]".."\x80"..i, true)
+		chatprint(i, true)
 	end
 end)
 
@@ -333,21 +334,21 @@ addHook("PlayerMsg", function(player, type, target, msg)
 		*/
 		if server == player
 			if isdedicatedserver == true
-				text = "["..#player.."]".."**<~Server>**".." "..message.."\n"
+				text = "**<~Server>**".." "..message.."\n"
 				DiscordBot.Functions.spamchatbug(player, text)
 				chatprint("<\x82~\x80Server>".." "..message)
 				return true
 			end
 		end
-		text = "["..#player.."]".."**<"..player.name..">**".." "..message.."\n"
-		if IsPlayerAdmin(player) then text = "["..#player.."]".."**<@"..player.name..">**".." "..message.."\n" end
+		text = "**<"..player.name..">**".." "..message.."\n"
+		if IsPlayerAdmin(player) then text = "**<@"..player.name..">**".." "..message.."\n" end
 		if text
 			sendit = DiscordBot.Functions.spamchatbug(player, text)
 			if sendit == true
 				return false
 			end
 			if sendit == false
-				//chatprintf(player, "You're repeating yourself, please wait "..((5*TICRATE - (DiscordBot.Data.servertime - DiscordBot.Messages[player.name][text]))/TICRATE).." sec. or send a different message.")
+				--chatprintf(player, "You're repeating yourself, please wait "..((5*TICRATE - (DiscordBot.Data.servertime - DiscordBot.Messages[player.name][text]))/TICRATE).." sec. or send a different message.")
 				chatprintf(player, "Wait a second before sending a message and chat again.")
 				return true
 			end
@@ -366,13 +367,13 @@ addHook("PlayerThink", function(player)
 	if not player.oldname then player.oldname = player.name end
 	if player.name != player.oldname
 	string.gsub(player.name, "`", "")
-		local text = "["..#player.."]"..":pencil2:**"..string.gsub(player.oldname, "*", "").."** renamed to **"..string.gsub(player.name, "*", "").."**:pencil2:\n"
+		local text = ":pencil2:**"..string.gsub(player.oldname, "*", "").."** renamed to **"..string.gsub(player.name, "*", "").."**\n"
 		DiscordBot.Data.msgsrb2 = DiscordBot.Data.msgsrb2..text
 		player.oldname = player.name
 	end
 	if DiscordBot.Commands.cv_joinquit.value == 1
 		if player.logjoin != true
-			local text = "["..#player.."]"..":rocket:**"..player.name.."** has joined the game:rocket:\n"
+			local text = ":rocket:**"..player.name.."** has joined the game!\n"
 			if text
 				DiscordBot.Functions.spamchatbug(player, text, true)
 				player.logjoin = true
@@ -396,22 +397,22 @@ addHook("PlayerQuit", function(player, reason)
 	if DiscordBot.Commands.cv_joinquit.value == 1
 		player.quitlog = true
 		if reason == KR_KICK
-			text = "["..#player.."]"..":boot:**"..player.name.."** has been kicked:boot:\n"
+			text = ":boot:**"..player.name.."** has been kicked.\n"
 		end
 		if reason == KR_PINGLIMIT
-			text = "["..#player.."]"..":red_square:**"..player.name.."** left the game (Ping limit):red_square:\n"
+			text = ":red_square:**"..player.name.."** left the game (Ping limit)\n"
 		end
 		if reason == KR_SYNCH
-			text = "["..#player.."]"..":o:**"..player.name.."** left the game (Synch Failure):o:\n"
+			text = ":o:**"..player.name.."** left the game (Synch Failure)\n"
 		end
 		if reason == KR_TIMEOUT
-			text = "["..#player.."]"..":o:**"..player.name.."** left the game (Connection timeout):o:\n"
+			text = ":o:**"..player.name.."** left the game (Connection timeout)\n"
 		end
 		if reason == KR_BAN
-			text = "["..#player.."]"..":hammer:**"..player.name.."** has been banned:hammer:\n"
+			text = ":hammer:**"..player.name.."** has been banned!\n"
 		end
 		if reason == KR_LEAVE
-			text = "["..#player.."]"..":door:**"..player.name.."** left the game:door:\n"
+			text = ":door:**"..player.name.."** left the game.\n"
 		end
 		if text
 			DiscordBot.Functions.spamchatbug(player, text, true)

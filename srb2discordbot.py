@@ -34,28 +34,22 @@ root.withdraw()
 
 
 #Text output about script information
-print("Compliled with auto-py-to-exe 2.26.1 and pyinstaller 5.7.0")
-print("Python 3.11.1 (tags/v3.11.1:a7a450f, Dec  6 2022, 19:58:39)")
-print("Python modules:")
-print("Discord 1.7.3")
-print("Tkinter 0.1.0")
-print("Colorama 0.4.6")
-print("C data types 1.1.0")
-print("Transliterate 1.10.2")
-print("Regular Expression Engine 2.2.1")
-print("JavaScript Object Notation 2.0.9\n")
+# print("Compliled with auto-py-to-exe 2.26.1 and pyinstaller 5.7.0")
+# print("Python 3.11.1 (tags/v3.11.1:a7a450f, Dec  6 2022, 19:58:39)")
+# print("Python modules:")
+# print("Discord 1.7.3")
+# print("Tkinter 0.1.0")
+# print("Colorama 0.4.6")
+# print("C data types 1.1.0")
+# print("Transliterate 1.10.2")
+# print("Regular Expression Engine 2.2.1")
+# print("JavaScript Object Notation 2.0.9\n")
 print(Fore.GREEN + Style.BRIGHT + "===============================================================================")
-print(Fore.GREEN + Style.BRIGHT + "      srb2discordbot.exe - Link your SRB2 server to your discord server!       ")
-print(Fore.GREEN + Style.BRIGHT + "         Starts server with previous map and restarts on fatal error           ")
-print(Fore.GREEN + Style.BRIGHT + "            Communicate via Discord with players on the SRB2 Server            ")
-print(Fore.GREEN + Style.BRIGHT + "               View statistics of SRB2 Server and command support              ")
-print(Fore.GREEN + Style.BRIGHT + "                     Created by Sirexer (i suck at python)                     ")
-print(Fore.GREEN + Style.BRIGHT + "                            Discord: Sirexer#2004                              ")
-print(Fore.GREEN + Style.BRIGHT + "                      Youtube: https:youtube.com/sirexer                       ")
-print(Fore.GREEN + Style.BRIGHT + "                Discord Server DreamUniverse: http://srb2du.org              ")
+print(Fore.GREEN + Style.BRIGHT + "        SRB2 Discord Bot - Link your SRB2 server to your Discord server        ")
+print(Fore.GREEN + Style.BRIGHT + "                        Originally created by Sirexer                          ")
 print(Fore.GREEN + Style.BRIGHT + "===============================================================================")
-print("SRB2DiscordBot v1.0 (19.03.2023)")
-print(Fore.YELLOW + "Warning: Don't forget to add lua script to SRB2, the bot won't work without it.")
+print("SRB2DiscordBot v1.1 (30/05/2024)")
+print(Fore.YELLOW + "Warning: Don't forget to add the lua script to SRB2, the bot won't work without it.")
 print("Setting up...")
 
 
@@ -128,54 +122,68 @@ inp_srb2app = None
 inp_address = None
 inp_url = None
 inp_debug = None
+
 #Create config.json
 def json_config():
     reg_id = re.compile("[^0-9]")
     global inp_token
     global inp_channelpost
     global inp_channelstatus
+    global inp_roleping
     global inp_channellog
     global inp_botprex
     global inp_srb2app
     global inp_address
     global inp_url
     global inp_debug
+
     if not inp_token:
-        inp_token = input("Token of your discord bot:")
+        inp_token = input("Token of your discord bot: ")
     while inp_token == "":
-        messagebox.showwarning("Warning: Empty value.", "Token is needed to work with discord.")
-        inp_token = input("Token of your discord bot:")
+        messagebox.showwarning("Warning: Empty value.", "Token is needed to work with Discord.")
+        inp_token = input("Token of your Discord bot: ")
     inp_token = "\n\"token\": \""+inp_token+"\","
+
     if not inp_channelpost:
-        inp_channelpost = input("Message channel ID:")
+        inp_channelpost = input("Message channel ID: ")
     while inp_channelpost == "":
         messagebox.showwarning("Warning: Empty value.", "Need a channel ID where there will be messages from the game.")
-        inp_channelpost = input("Message channel ID:")
+        inp_channelpost = input("Message channel ID: ")
     inp_channelpost = (reg_id.sub('', inp_channelpost))
     inp_channelpost = "\n\"post_id\": "+inp_channelpost+","
+
+    if not inp_roleping:
+        inp_roleping = input("Role ID that you want to ping when server starts (optional): ")
+        if inp_roleping == "":
+            inp_roleping = "0"
+    inp_roleping = "\n\"role_id\": \""+inp_roleping+"\","
+
     if not inp_channelstatus:
-        inp_channelstatus = input("Information Channel ID:")
+        inp_channelstatus = input("Information channel ID: ")
     while inp_channelstatus == "":
          messagebox.showwarning("Warning: Empty value.", "Need a channel ID where there will be Information from the game.")
-         inp_channelstatus = input("Information Channel ID:")
+         inp_channelstatus = input("Information channel ID: ")
     inp_channelstatus = "\n\"status_id\": "+inp_channelstatus+","
+
     if not inp_channellog:
-        inp_channellog = input("Log channel ID(not necessary):")
+        inp_channellog = input("Log channel ID (optional): ")
         if inp_channellog == "":
-            inp_channellog = "\"None\""
+            inp_channellog = "0"
     inp_channellog = (reg_id.sub('', inp_channellog))
     inp_channellog = "\n\"log_id\": "+inp_channellog+","
+
     if not inp_botprex:
-        inp_botprex = input("Prefix for the discord bot. Default ~srbot:")
+        inp_botprex = input("Prefix for the Discord bot. Default is '~srbot':")
         if inp_botprex == "":
             inp_botprex = "~srbot"
         elif inp_botprex != "":
             inp_botprex = inp_botprex.lower()
     inp_botprex = inp_botprex.translate({ord(' '): ''})
     inp_botprex = "\n\"botprefix\": \""+inp_botprex+"\","
+
     if not inp_srb2app:
         print(Fore.YELLOW + "Warning: If you are hosting multiple SRB2 servers on this computer, enter a new name for the SRB2 .exe file. For example \"my_server1\". (This is to avoid conflicts with other servers)")
-        inp_srb2app = input("The new name of the SRB2 EXE file:")
+        inp_srb2app = input("The new name of the SRB2 .EXE file:")
         if inp_srb2app == "":
             inp_srb2app = "srb2win.exe"
         elif inp_srb2app != "":
@@ -183,19 +191,27 @@ def json_config():
             inp_srb2app = inp_srb2app+".exe"
             inp_srb2app = inp_srb2app.lower()
     inp_srb2app = "\n\"srb2exe\": \""+inp_srb2app+"\","
+
     if not inp_address:
-        inp_address = input("IP address of SRB2 Server(not necessary):")
+        inp_address = input("IP address of SRB2 Server (optional):")
+        if inp_address == "":
+            inp_address = "0.0.0.0"
     inp_address = "\n\"ip\": \""+inp_address+"\","
+
     if not inp_url:
-        inp_url = input("Address where the level pictures are located(not necessary):")
+        inp_url = input("Address where the level pictures are located (optional):")
         if inp_url == "":
             inp_url = "None.lol"
     inp_url = "\n\"url\": \""+inp_url+"\","
+
     if not inp_debug:
         inp_debug = "\n\"debug\": false"
+    
+    #write these settings to the new json file
     create_file = open("srb2discordbot/config.json", "w+")
-    create_file.write("{"+inp_token+inp_channelpost+inp_channelstatus+inp_channellog+inp_botprex+inp_srb2app+inp_address+inp_url+inp_debug+"\n}")
+    create_file.write("{"+inp_token+inp_channelpost+inp_roleping+inp_channelstatus+inp_channellog+inp_botprex+inp_srb2app+inp_address+inp_url+inp_debug+"\n}")
     create_file.close()
+
 #Check the config file, if it does not exist, create it
 if os.path.isfile("srb2discordbot/config.json") == False:
     print("Creating a new .json file...")
@@ -207,6 +223,7 @@ try:
     print("Executing config file srb2discordbot/config.json...")
     file_json = open("srb2discordbot/config.json", "r")
     config = json.load(file_json)
+
 #If the file is damaged, then delete it and close the program
 except json.decoder.JSONDecodeError:
     file_json.close()
@@ -217,6 +234,7 @@ except json.decoder.JSONDecodeError:
         messagebox.showerror("Error: Trouble with a config file.", "Invalid .json file configuration, it will be deleted.")
         os.remove("srb2discordbot/config.json")
     exit()
+
 #Check if there are all values in the config, if they are not, then add
 json_notenough = False
 try:
@@ -268,8 +286,9 @@ try:
             inp_debug = "\n\"debug\": true"
 except KeyError:
     json_notenough = True
+
 if json_notenough == True:
-    print("Not all variables in the file recreate")
+    print("Not all settings are set in the config. Recreating config...")
     json_config()
     file_json = open("srb2discordbot/config.json", "r")
     config = json.load(file_json)
@@ -292,12 +311,12 @@ print("Reading parameters from cfg file...")
 if os.path.isfile("srb2discordbot/serverparameters/parameters.cfg") == False:
     print("The parameters.cfg file was not found, creating a new one...")
     print("Enter the parameters of the .exe file. For example \"-dedicated -server -room 33 -file...\"")
-    inp_parameters = input("Parameters:")
+    inp_parameters = input("Parameters: ")
     create_file = open("srb2discordbot/serverparameters/parameters.cfg", "w+")
     if inp_parameters != "":
         create_file.write(inp_parameters)
     elif inp_parameters == "":
-        create_file.write("-dedicated -server 1 -room 33 -gametype 0 -file SRB2DiscordBot.wad")
+        create_file.write("-dedicated -server 1 -room 33 -gametype 0 -file SRB2DiscordBot.lua")
     create_file.close()
 
 
@@ -622,6 +641,10 @@ def changeparameters():
             countpcfg_file.write(str(countpcfg))
             countpcfg_file.close()
 
+def write_to_log(prefix, message):
+    mlogs_file = open(mlogpath, "a")
+    mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S")+"]"+prefix+": "+message+"\n")
+    mlogs_file.close()
 
 #Starting SRB2 Server
 def startserver():
@@ -737,7 +760,7 @@ def getsrbstats():
         #Open statistics of SRB2 Server
         srbstats = open('luafiles/client/DiscordBot/Stats.txt', 'r')
         #Get server name
-        reg = re.compile("[^a-zA-Z0-9 !@#$%^&*()-_=+{}[]|\/?<>.,`~]")
+        reg = re.compile("[^a-zA-Z0-9 !@#$%^&*()-_=+{}[]|/\?<>.,`~]")
         servername = srbstats.readline()
         servername = (reg.sub('', servername))
         #Get level name and map number
@@ -860,6 +883,14 @@ class MyClient(discord.Client):
         global pastmap
         global gamepaused
 
+        #variables for message status
+        global shutdown_message
+        shutdown_message = "❌ `Server has shut down.`"
+
+        global startup_message
+        startup_message = "✅ `Server has started!`"
+        if inp_roleping != "none":
+            startup_message = f"✅ <@&{inp_roleping}> `Server has started!`"
 
         #Print bot name to console on successful connection
         print(Style.BRIGHT + Back.GREEN + 'SUCCESS:' + Style.RESET_ALL + Fore.GREEN + ' logged on as {0}!'.format(self.user))
@@ -874,7 +905,7 @@ class MyClient(discord.Client):
         #If the channel ID is not correct, display an error window and close the program
         except AttributeError:
             if config["debug"] == True:
-                print("[" + now.strftime("%H:%M") + "]" + Fore.RED + 'Error:' + Style.RESET_ALL + ' failed ti get a guild ID')
+                print("[" + now.strftime("%H:%M") + "]" + Fore.RED + 'Error:' + Style.RESET_ALL + ' failed to get a guild ID.')
             messagebox.showerror("Error: Improper Message or Log Channel ID has been passed.", "Check the channel ID, change it in the discordbot.json file.")
             exit()
 
@@ -898,25 +929,28 @@ class MyClient(discord.Client):
                     #Don't read what was readed
                     for line in log[log_lens:]:
                         if line.startswith("Entering main game loop..."):
-                            await client.get_channel(config["post_id"]).send("✅`Server has been started!`✅")
+                            await client.get_channel(config["post_id"]).send(startup_message)
                             print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + "Server has been started!")
-                            mlogs_file = open(mlogpath, "a")
-                            mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: Server has been started!\n")
-                            mlogs_file.close()
+                            write_to_log("SRB2 Status Message:", "Server has been started!")
                             server_isplaying = True
+
                         elif line.startswith("Current gametype is "):
                             gametype = line[20:]
+
                         elif line.startswith("Logfile:"):
                             srblog = line[16:]
+
                         elif line.startswith("Map is now"):
                             #Write the current map to a file
                             if pastmap == None:
                                 pastmap = line[12:17]
                             dbm = False
+                            
                             for element in bannedsavemaps:
                                 if line[12:17].lower() == ("map"+element):
                                     dbm = True
                                     continue
+                            
                             if dbm == False:
                                 if currentmap != None:
                                     pastmap = currentmap
@@ -926,54 +960,52 @@ class MyClient(discord.Client):
                                 file_mapsrb2.write(mapsrb2)
                                 file_mapsrb2.close()
                             dbm = None
+                            
                             if tr_completecount:
                                 completecount = completecount + 1
+                            
                             if currentmap == pastmap:
                                 avoidautorestart = True
+                            
                             if avoidautorestart == False:
                                 if restart_mv == True:
                                     for element in mapvalues:
                                         if "map"+element.lower() == line[12:17].lower():
                                             print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + "Autorestart!")
-                                            await client.get_channel(config["post_id"]).send("🔄`Autorestart!`🔄")
+                                            await client.get_channel(config["post_id"]).send("🔄 `Autorestart!`")
                                             await client.change_presence(status=discord.Status.dnd,activity=discord.Game("Restarting server..."))
-                                            mlogs_file = open(mlogpath, "a")
-                                            mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: Autorestart!\n")
-                                            mlogs_file.close()
+                                            write_to_log("SRB2 Status Message:", "Autorestart!")
                                             avoidautorestart = True
                                             if tr_completecount:
                                                 if completecount > tr_completecount:
                                                     completecount = 0
                                             changeparameters()
                                             restartserver()
+                                
                                 #tr_completecount completecount
                                 if tr_completecount != None:
                                     if avoidautorestart == False:
                                         if tr_completecount+1 == completecount:
                                             print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + "Autorestart!")
-                                            await client.get_channel(config["post_id"]).send("🔄`Autorestart!`🔄")
+                                            await client.get_channel(config["post_id"]).send("🔄 `Autorestart!`")
                                             await client.change_presence(status=discord.Status.dnd,activity=discord.Game("Restarting server..."))
-                                            mlogs_file = open(mlogpath, "a")
-                                            mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: Autorestart!\n")
-                                            mlogs_file.close()
+                                            write_to_log("SRB2 Status Message:", "Autorestart!")
                                             completecount = 0
                                             changeparameters()
                                             restartserver()
                             else:
                                 avoidautorestart = False
+                            
                             if server_isplaying == True:
                                 print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + line)
-                                await client.get_channel(config["post_id"]).send("➡️`" + line + "`➡️")
-                                mlogs_file = open(mlogpath, "a")
-                                mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: " + line + "\n")
-                                mlogs_file.close()
+                                await client.get_channel(config["post_id"]).send("➡️ `" + line + "`")
+                                write_to_log("SRB2 Status Message:", + line)
+                        
                         elif line.startswith("ERROR: Can't open "):
                             twoxsdavoid = 2
                             messagebox.showerror(line[18:] + " was not found or not valid." , "Find the addon file or remove it from srb2discordbot/serverparameters/parameters.cfg file.")
                             print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + line[18:] + " was not found or not valid.")
-                            mlogs_file = open(mlogpath, "a")
-                            mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: " + line[18:] + " was not found or not valid.\n")
-                            mlogs_file.close()
+                            write_to_log("SRB2 Status Message:", line[18:] + " was not found or not valid.")
                             if msgstats != None:
                                 try:
                                     await msgstats.delete()
@@ -994,10 +1026,8 @@ class MyClient(discord.Client):
                         elif line.startswith("Process killed by signal") or line.startswith("I_Error():") and not line.endswith("was not found or not valid."):
                             twoxsdavoid = 2
                             print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + line)
-                            await client.get_channel(config["post_id"]).send("❌`Server has shutdown`❌")
-                            mlogs_file = open(mlogpath, "a")
-                            mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: " + line + "\n")
-                            mlogs_file.close()
+                            await client.get_channel(config["post_id"]).send(shutdown_message)
+                            write_to_log("SRB2 Status Message:", line)
                             if msgstats != None:
                                 try:
                                     await msgstats.delete()
@@ -1012,12 +1042,10 @@ class MyClient(discord.Client):
                         #Restart after server has shutdown
                         elif line.startswith("I_ShutdownSystem():"):
                             if twoxsdavoid == 0:
-                                await client.get_channel(config["post_id"]).send("❌`Server has shutdown`❌")
-                                await client.change_presence(status=discord.Status.dnd,activity=discord.Game("Server has shutdown"))
-                                print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + "Server has shutdown")
-                                mlogs_file = open(mlogpath, "a")
-                                mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: Server has shutdown\n")
-                                mlogs_file.close()
+                                await client.get_channel(config["post_id"]).send(shutdown_message)
+                                await client.change_presence(status=discord.Status.dnd,activity=discord.Game("Server has shut down."))
+                                print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + "Server has shut down.")
+                                write_to_log("SRB2 Status Message:", "Server has shut down.")
                                 if msgstats != None:
                                     try:
                                         await msgstats.delete()
@@ -1048,12 +1076,10 @@ class MyClient(discord.Client):
                     #Restart if it is closed
                     if isstarted == False:
                         if server_isplaying == True:
-                            await client.get_channel(config["post_id"]).send("❌`Server has shutdown`❌")
-                            await client.change_presence(status=discord.Status.dnd,activity=discord.Game("Server has shutdown"))
-                        print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + "Server has shutdown")
-                        mlogs_file = open(mlogpath, "a")
-                        mlogs_file.write("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Status Message: Server has shutdown\n")
-                        mlogs_file.close()
+                            await client.get_channel(config["post_id"]).send(shutdown_message)
+                            await client.change_presence(status=discord.Status.dnd,activity=discord.Game("Server has shut down."))
+                        print("[" + now.strftime("%H:%M") + "]" + Fore.YELLOW + "SRB2 Status Message: " + Style.RESET_ALL + "Server has shut down.")
+                        write_to_log("SRB2 Status Message:", "Server has shut down.")
                         if msgstats != None:
                             try:
                                 await msgstats.delete()
@@ -1132,13 +1158,16 @@ class MyClient(discord.Client):
                             srbmessages.close()
                             await self.get_channel(config["post_id"]).send(srbm)
                             srbm = srbm.translate({ord('*'): ''})[:-1]
+
                             mlogs_file = open(mlogpath, "a")
                             mlogs_file.write(("[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]SRB2 Message: " + srbm).translate({ord('\n'): "\n[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]" +  'SRB2 Message: '})+"\n")
                             mlogs_file.close()
+
                             srbm = srbm.translate({ord('\n'): "\n[" + now.strftime("%H:%M") + "]" + Fore.BLUE + Style.BRIGHT + 'SRB2 Message: ' + Style.RESET_ALL})
                             for delemote in ":rocket:", ":boot:", ":red_square:", ":o:", ":hammer:", ":door:", ":pencil2:":
                                 srbm = srbm.replace(delemote, '')
                             print("[" + now.strftime("%H:%M") + "]" + Fore.BLUE + Style.BRIGHT + 'SRB2 Message:' + Style.RESET_ALL + ' ' + srbm)
+                        
                         #If the channel ID is not correct, display an error window and close the program
                         except AttributeError:
                             messagebox.showerror("Error: Improper Message Channel ID has been passed.", "Check the channel ID, change it in the discordbot.json file.")
@@ -1148,6 +1177,7 @@ class MyClient(discord.Client):
                                 print("[" + now.strftime("%H:%M") + "]" + Fore.RED + 'Error:' + Style.RESET_ALL + ' unable to edit Messages.txt file because it is busy.')
                         except discord.errors.Forbidden:
                              messagebox.showerror("Error: Missing Permissions", "No access to the channel, give access to read and send messages for bot.")
+                        
                         #Don't close the program on any error
                         except:
                                 if config["debug"] == True:
@@ -1266,11 +1296,14 @@ class MyClient(discord.Client):
         global discordcmdmsg
         global server_isplaying
         global gamepaused
+        
         #Current time
         now = datetime.datetime.now()
+        
         #Create a list of allowed characters that will not be removed from the message
         reg = re.compile('[^a-zA-Zа-б0-9 !@#$%^&*()-_=+{}[]|\/?<>.,`~]\n')
         channel = self.get_channel(config["post_id"])
+        
         #Ignore the message if it was sent by the bot
         if message.channel == channel and message.author != self.user and not message.content.startswith(config["botprefix"]) and gamepaused == False:
             #Change role ID to role name
@@ -1298,6 +1331,7 @@ class MyClient(discord.Client):
                         message.content = message.content.replace(role_code, "@"+role_object.name)
                     else:
                        message.content = message.content.replace(role_code, "@invalid-role")
+            
             #Change user ID to nickname on the server
             userlens = 0
             while message.content[userlens:].find('<@') != -1:
@@ -1320,9 +1354,10 @@ class MyClient(discord.Client):
                     except discord.errors.NotFound:
                         user_object = None
                     if user_object != None:
-                        message.content = message.content.replace(user_code, "@"+user_object.display_name+'#'+user_object.discriminator)
+                        message.content = message.content.replace(user_code, "@"+user_object.display_name)
                     else:
-                        message.content = message.content.replace(user_code, "@invalid-user#0000")
+                        message.content = message.content.replace(user_code, "@invalid-user")
+            
             #Change channel ID to channel name
             channellens = 0
             while message.content[channellens:].find('<#') != -1:
@@ -1348,23 +1383,26 @@ class MyClient(discord.Client):
                         message.content = message.content.replace(channel_code, "#"+channel_object.name)
                     else:
                         message.content = message.content.replace(channel_code, "#invalid-channel")
+            
             #Output to console
-            discordcmdmsg = Fore.MAGENTA + Style.BRIGHT +  'Discord Message: ' + Style.RESET_ALL + '<{0.author.display_name}#{0.author.discriminator}> {0.content}'.format(message)
+            discordcmdmsg = Fore.MAGENTA + Style.BRIGHT +  'Discord Message: ' + Style.RESET_ALL + '<{0.author.display_name}> {0.content}'.format(message)
             discordcmdmsg = (discordcmdmsg.translate({ord('\n'): ' '}))
             print("[" + now.strftime("%H:%M") + "]" + discordcmdmsg)
             mlogs_file = open(mlogpath, "a")
-            mlogs_text = "[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]Discord Message: <{0.author.display_name}#{0.author.discriminator}> {0.content}".format(message) + "\n"
+            mlogs_text = "[" + now.strftime("%Y-%m-%d %H:%M:%S") + "]Discord Message: <{0.author.display_name}> {0.content}".format(message) + "\n"
             mlogs_text = (reg.sub('', mlogs_text))
             mlogs_file.write(mlogs_text)
             mlogs_file.close()
+            
             #Format the message
             try:
                 message.content = transliterate.translit(message.content, reversed=True)
             except transliterate.exceptions.LanguageDetectionError:
                 pass
-            content = ('\"{0.author.display_name}#{0.author.discriminator}: {0.content}\" '.format(message))
+            content = ('\"\x89[@{0.author.display_name}]\x80 {0.content}\" '.format(message))
             content = (content.translate({ord('\n'): ' '}))
             content = (reg.sub('', content))
+            
             #Open a file and write message
             dmsg = open('luafiles/client/DiscordBot/discordmessage.txt', 'a')
             dmsg.write('\"'+content+'\" ')
@@ -1606,7 +1644,12 @@ class MyClient(discord.Client):
 #client = MyClient(intents=intents) discord.errors.PrivilegedIntentsRequired:
 if isdiscordborwork == False:
     isdiscordborwork = True
-    client = MyClient()
+
+    # get client object and set it to bot variable
+    intents = discord.Intents.default()
+    intents.message_content = True
+    client = MyClient(intents=intents)
+
     try:
         #Get a token and connect to the bot
         print("Connecting to a discord bot...")
